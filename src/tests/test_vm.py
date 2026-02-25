@@ -2,7 +2,9 @@
 # It assumes the VirtualMachine, OpCode, and Closure classes are defined
 # in a file named `vm.py` in the same directory.
 
-from vm import VirtualMachine, OpCode, Closure  # Assuming vm.py contains the VM
+import os # Added for sys.path manipulation
+import sys # Added for sys.path manipulation
+from src.vm import VirtualMachine, OpCode, Closure  # Assuming vm.py contains the VM
 
 
 def run_test(
@@ -311,13 +313,19 @@ def test_struct_operations():
     )
 
 
-if __name__ == "__main__":
+def run_all_vm_tests():
+    """Runs all VM tests."""
+    print("--- Running VM Tests ---")
     test_arithmetic()
     test_conditional()
-    test_function_call_closure()  # This test's bytecode was corrected
+    test_function_call_closure()
     test_recursion_closure()
     test_scope_closure()
     test_true_closure_make_adder()
     test_struct_operations()
+    # The final "All tests completed" print is now inside this function.
 
-    print("\nAll tests completed.")
+if __name__ == "__main__":
+    # To run this file directly, ensure the project root is in PYTHONPATH
+    # or run as a module: python -m src.tests.test_vm
+    run_all_vm_tests()

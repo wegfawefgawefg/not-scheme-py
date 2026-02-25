@@ -5,18 +5,18 @@ import time
 import os
 import sys
 
-# Assuming run_notscheme.py is in the same directory or accessible in PYTHONPATH
+# Assuming run_notscheme.py is in the src directory or accessible in PYTHONPATH
 try:
-    from run_notscheme import (
+    from ns import (
         compile_program_with_dependencies,
         execute_bytecode,
         NotSchemeError,
     )
-    from vm import QuotedSymbol
+    from src.vm import QuotedSymbol
 except ImportError as e:
-    print(f"Error importing from run_notscheme.py or vm.py: {e}")
+    print(f"Error importing from src.run_notscheme or src.vm: {e}")
     print(
-        "Please ensure run_notscheme.py and vm.py are in the same directory or accessible via PYTHONPATH."
+        "Please ensure run_notscheme.py and vm.py are in the src/ directory or accessible via PYTHONPATH."
     )
     sys.exit(1)
 
@@ -163,8 +163,9 @@ def run_performance_test(
     print("-" * 30)
 
 
-if __name__ == "__main__":
-    print("Running Performance Comparison...")
+def run_all_speed_tests():
+    """Runs all speed/performance comparison tests."""
+    print("--- Running Performance Comparison Tests ---")
 
     fib_n_value = 20
     run_performance_test(
@@ -175,8 +176,7 @@ if __name__ == "__main__":
         notscheme_main_file_name=f"fib_test_{fib_n_value}.ns",
     )
 
-    # Reduced sum_n_value to avoid Python's default recursion limit
-    sum_n_value = 900
+    sum_n_value = 900  # Reduced from a potentially higher value
     run_performance_test(
         "Recursive Summation",
         notscheme_sum_recursive_code_template.format(N=sum_n_value),
@@ -184,5 +184,10 @@ if __name__ == "__main__":
         sum_n_value,
         notscheme_main_file_name=f"sum_recursive_test_{sum_n_value}.ns",
     )
+    # The final "Performance comparison finished." print is now inside this function.
 
-    print("\nPerformance comparison finished.")
+
+if __name__ == "__main__":
+    # To run this file directly, ensure the project root is in PYTHONPATH
+    # or run as a module: python -m src.tests.test_speed
+    run_all_speed_tests()
